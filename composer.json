@@ -1,5 +1,6 @@
 {
     "name": "thomasbeaujean/jsonannotationbundle",
     "description": "add the json annotation for an action",
+    "type": "library",
     "version": "0.1.0"
 }
