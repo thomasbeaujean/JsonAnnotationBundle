@@ -1,25 +1,17 @@
 <?php
 
-namespace thomasbeaujean\JsonAnnotationBundle\DependencyInjection;
+namespace thomasbeaujean\Bundle\JsonAnnotationBundle\DependencyInjection;
 
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 
-/*
- * This file is part of the Symfony framework.
- *
- * (c) Fabien Potencier <fabien@symfony.com>
- *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
- */
 
 /**
  * SensioFrameworkExtraExtension.
  *
- * @author Fabien Potencier <fabien@symfony.com>
+ * @author Thomas Beaujean
  */
 class JsonAnnotationExtension extends Extension
 {
@@ -29,60 +21,21 @@ class JsonAnnotationExtension extends Extension
         $config = $this->processConfiguration($configuration, $configs);
 
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        //$loader->load('services.xml');
 
         $annotationsToLoad = array();
 
-        /*if ($config['router']['annotations']) {
-            $annotationsToLoad[] = 'routing.xml';
 
-            $this->addClassesToCompile(array(
-                'Sensio\\Bundle\\FrameworkExtraBundle\\EventListener\\ControllerListener',
-            ));
-        }
-*/
-     /*   if ($config['request']['converters']) {
-            $annotationsToLoad[] = 'converters.xml';
+        $annotationsToLoad[] = 'view.xml';
 
-            $this->addClassesToCompile(array(
-                // cannot be added because it has some annotations
-                //'Sensio\\Bundle\\FrameworkExtraBundle\\Configuration\\ParamConverter',
-                'Sensio\\Bundle\\FrameworkExtraBundle\\EventListener\\ParamConverterListener',
-                'Sensio\\Bundle\\FrameworkExtraBundle\\Request\\ParamConverter\\DateTimeParamConverter',
-                'Sensio\\Bundle\\FrameworkExtraBundle\\Request\\ParamConverter\\DoctrineParamConverter',
-                'Sensio\\Bundle\\FrameworkExtraBundle\\Request\\ParamConverter\\ParamConverterInterface',
-                'Sensio\\Bundle\\FrameworkExtraBundle\\Request\\ParamConverter\\ParamConverterManager',
-            ));
-        }
-*/
-      //  if ($config['view']['annotations']) {
-            $annotationsToLoad[] = 'view.xml';
+	    $this->addClassesToCompile(array(
+	  	    'thomasbeaujean\\Bundle\\JsonAnnotationBundle\\EventListener\\JsonListener',
+        ));
 
-            $this->addClassesToCompile(array(
-                'tbn\\Bundle\\JsonAnnotationBundle\\EventListener\\JsonListener',
-            ));
-//        }
+        $loader->load('annotations.xml');
 
-  /*      if ($config['cache']['annotations']) {
-            $annotationsToLoad[] = 'cache.xml';
-
-            $this->addClassesToCompile(array(
-                'Sensio\\Bundle\\FrameworkExtraBundle\\EventListener\\CacheListener',
-            ));
-        }
-*/
-       // if ($annotationsToLoad) {
-            // must be first
-            $loader->load('annotations.xml');
-
-            foreach ($annotationsToLoad as $config) {
-                $loader->load($config);
-            }
-
-           /* $this->addClassesToCompile(array(
-                'Sensio\\Bundle\\FrameworkExtraBundle\\Configuration\\ConfigurationAnnotation',
-            ));
-        }*/
+        foreach ($annotationsToLoad as $config) {
+            $loader->load($config);
+         }
     }
 
     /**

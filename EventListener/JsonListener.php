@@ -1,14 +1,15 @@
 <?php
 
-namespace thomasbeaujean\JsonAnnotationBundle\EventListener;
+namespace thomasbeaujean\Bundle\JsonAnnotationBundle\EventListener;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\StreamedResponse;
-use tbn\Bundle\JsonAnnotationBundle\Configuration\Json;
+use thomasbeaujean\Bundle\JsonAnnotationBundle\Configuration\Json;
 use Symfony\Component\HttpFoundation\Response;
 
 /*
@@ -23,7 +24,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * The TemplateListener class handles the @Template annotation.
  *
- * @author     Fabien Potencier <fabien@symfony.com>
+ * @author Thomas Beaujean
  */
 class JsonListener implements EventSubscriberInterface
 {
@@ -53,9 +54,12 @@ class JsonListener implements EventSubscriberInterface
         if (!is_array($controller = $event->getController())) {
             return;
         }
+
         $request = $event->getRequest();
 
-
+        if (!$configuration = $request->attributes->get('_json')) {
+            return;
+        }
     }
 
     /**
@@ -93,11 +97,35 @@ class JsonListener implements EventSubscriberInterface
         $event->setResponse(new Response($json, 200, $headers));
     }
 
+    public function onKernelException(GetResponseForExceptionEvent $event)
+    {
+        //the controller set automatically an attribut _json if the request is a json
+        if (!$template = $event->getRequest()->attributes->get('_json')) {
+            return;
+        }
+
+        $jsonData =  array();
+        $jsonData['success'] = false;
+
+        $exception = $event->getException();
+        $jsonData['message'] = $exception->getMessage();
+
+        $json = json_encode($jsonData);
+
+        $headers = array();
+        $headers['Content-Type'] = 'application/json; charset=utf-8';
+
+        $response = new Response($json, 200, $headers);
+        $response->headers->set('X-Status-Code', 200 );//BUG sf2 https://github.com/symfony/symfony/pull/5043
+        $event->setResponse($response);
+    }
+
     public static function getSubscribedEvents()
     {
         return array(
             KernelEvents::CONTROLLER => array('onKernelController', -128),
             KernelEvents::VIEW => 'onKernelView',
+            KernelEvents::EXCEPTION => 'onKernelException'
         );
     }
 }

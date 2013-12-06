@@ -1,6 +1,6 @@
 <?php
 
-namespace thomasbeaujean\JsonAnnotationBundle\DependencyInjection;
+namespace thomasbeaujean\Bundle\JsonAnnotationBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -9,7 +9,7 @@ use Symfony\Component\Config\Definition\NodeInterface;
 /**
  * FrameworkExtraBundle configuration structure.
  *
- * @author Henrik Bjornskov <hb@peytz.dk>
+ * @author Thomas Beaujean
  */
 class Configuration implements ConfigurationInterface
 {
@@ -21,7 +21,7 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('tbn_json_annotation', 'array');
+        $rootNode = $treeBuilder->root('json_annotation', 'array');
 
         return $treeBuilder;
     }

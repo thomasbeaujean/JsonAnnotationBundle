@@ -13,8 +13,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ConfigurationAnnotation;
  */
 class Json extends ConfigurationAnnotation
 {
-
-
     /**
      * Returns the annotation alias name.
      *

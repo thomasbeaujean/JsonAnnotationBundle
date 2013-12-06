@@ -1,13 +1,15 @@
 <?php
 
-namespace thomasbeaujean\JsonAnnotationBundle\EventListener;
+namespace thomasbeaujean\Bundle\JsonAnnotationBundle\EventListener;
 
 use Doctrine\Common\Annotations\Reader;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ConfigurationInterface;
+use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Doctrine\Common\Util\ClassUtils;
+use Symfony\Component\HttpFoundation\Response;
 
 /*
  * This file is part of the Symfony framework.
@@ -22,7 +24,7 @@ use Doctrine\Common\Util\ClassUtils;
  * The ControllerListener class parses annotation blocks located in
  * controller classes.
  *
- * @author Fabien Potencier <fabien@symfony.com>
+ * @author Thomas Beaujean
  */
 class ControllerListener implements EventSubscriberInterface
 {
@@ -105,7 +107,7 @@ class ControllerListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            KernelEvents::CONTROLLER => 'onKernelController',
+            KernelEvents::CONTROLLER => 'onKernelController'
         );
     }
 }

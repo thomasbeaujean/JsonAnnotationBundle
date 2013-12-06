@@ -4,13 +4,11 @@ namespace thomasbeaujean\JsonAnnotationBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use tbn\Bundle\JsonAnnotationBundle\DependencyInjection\Compiler\AddParamConverterPass;
-
 
 /**
- * SensioFrameworkExtraBundle.
+ * JsonAnnotationBundle.
  *
- * @author     Thomas Beaujean
+ * @author Thomas Beaujean
  */
 class JsonAnnotationBundle extends Bundle
 {
