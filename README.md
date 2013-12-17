@@ -1,9 +1,9 @@
 JsonAnnotationBundle
-####################
+=================
 
 The JsonAnnotationBundle permits to use an annotation Json for your controller
 
- Usage
+# Usage
 
 Use the annotation @Json() in your controller
 
@@ -14,51 +14,53 @@ It is a json stream with the property 'success' with the true value and the prop
 It is a json stream with the property 'success' with the false value and the property 'message' containing the error 
 # Examples
 ## The normal response Example
- use thomasbeaujean\JsonAnnotationBundle\Configuration\Json;
+
+    use thomasbeaujean\JsonAnnotationBundle\Configuration\Json;
  
- class DefaultController extends Controller
- {
-     /**
-      * The main view
-      *
-      * @Route("/someroute")
-      * @Json()
-      *
-      * @return array
-      */
-     public function somerouteAction()
-     { 
-  	     return array('data1' => 'value1', 'data2' => 'value2');
-     }
- }
+    class DefaultController extends Controller
+    {
+ 
+         /**
+          * The main view
+          *
+          * @Route("/someroute")
+          * @Json()
+          *
+          * @return array
+          */
+         public function somerouteAction()
+         { 
+  	         return array('data1' => 'value1', 'data2' => 'value2');
+         }
+      }
 
 It will send back a json stream
 
- 'success' => true
- 'data'    => ['data1' => 'value1', 'data2' => 'value2']
+     'success' => true
+     'data'    => ['data1' => 'value1', 'data2' => 'value2']
 
 ## The exception response
 
  use thomasbeaujean\JsonAnnotationBundle\Configuration\Json;
  
- class DefaultController extends Controller
- {
-     /**
-      * The main view
-      *
-      * @Route("/someroute")
-      * @Json()
-      *
-      * @return array
-      */
-     public function somerouteAction()
-     { 
-	     throw \Exception('some error occured');
+     class DefaultController extends Controller
+     {
+         /**
+          * The main view
+          *
+          * @Route("/someroute")
+          * @Json()
+          *
+          * @return array
+          */
+         public function somerouteAction()
+         { 
+    	     throw \Exception('some error occured');
+         }
      }
- }
 
 It will send back a json stream
 
- 'success' => false
- 'message'    => 'some error occured'
+     'success' => false
+     'message'    => 'some error occured'
 
