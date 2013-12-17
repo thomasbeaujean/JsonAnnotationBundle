@@ -2,18 +2,17 @@
 
 namespace thomasbeaujean\JsonAnnotationBundle\Configuration;
 
-use Symfony\Bundle\FrameworkBundle\Templating\TemplateReference;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ConfigurationAnnotation;
 
 /**
  * The Template class handles the @Json annotation parts.
  *
- * @author Thomas Beaujean
+ * @author Thomas Beaujean <thomas@appventus.com>
  * @Annotation
  */
 class Json extends ConfigurationAnnotation
 {
-    /**
+     /**
      * Returns the annotation alias name.
      *
      * @return string
