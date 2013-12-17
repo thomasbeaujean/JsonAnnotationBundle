@@ -20,6 +20,8 @@ class JsonListener implements EventSubscriberInterface
      * rendered template content.
      *
      * @param GetResponseForControllerResultEvent $event A GetResponseForControllerResultEvent instance
+     *
+     * @return Response The json response
      */
     public function onKernelView(GetResponseForControllerResultEvent $event)
     {
@@ -50,6 +52,13 @@ class JsonListener implements EventSubscriberInterface
         $event->setResponse(new Response($json, 200, $headers));
     }
 
+    /**
+     * On kernel exception, send a json response with a success to false
+     *
+     * @param GetResponseForExceptionEvent $event The event
+     *
+     * @return Response The json response
+     */
     public function onKernelException(GetResponseForExceptionEvent $event)
     {
         //the controller set automatically an attribut _json if the request is a json
@@ -69,10 +78,15 @@ class JsonListener implements EventSubscriberInterface
         $headers['Content-Type'] = 'application/json; charset=utf-8';
 
         $response = new Response($json, 200, $headers);
-        $response->headers->set('X-Status-Code', 200 );//BUG sf2 https://github.com/symfony/symfony/pull/5043
+        $response->headers->set('X-Status-Code', 200);//BUG sf2 https://github.com/symfony/symfony/pull/5043
         $event->setResponse($response);
     }
 
+    /**
+     * List the subscribed events
+     *
+     * @return multitype:string multitype:string number
+     */
     public static function getSubscribedEvents()
     {
         return array(
