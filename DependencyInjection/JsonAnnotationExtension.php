@@ -23,33 +23,15 @@ class JsonAnnotationExtension extends Extension
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
 
         $annotationsToLoad = array();
-
-
         $annotationsToLoad[] = 'view.xml';
 
 	    $this->addClassesToCompile(array(
 	  	    'thomasbeaujean\\JsonAnnotationBundle\\EventListener\\JsonListener',
         ));
 
-        $loader->load('annotations.xml');
 
         foreach ($annotationsToLoad as $config) {
             $loader->load($config);
-         }
-    }
-
-    /**
-     * Returns the base path for the XSD files.
-     *
-     * @return string The XSD base path
-     */
-    public function getXsdValidationBasePath()
-    {
-        return __DIR__.'/../Resources/config/schema';
-    }
-
-    public function getNamespace()
-    {
-        return 'http://symfony.com/schema/dic/symfony_extra';
+        }
     }
 }
