@@ -11,7 +11,6 @@
     <services>
         <service id="jsonannotation.view.listener" class="%jsonannotation.view.listener.class%">
             <tag name="kernel.event_subscriber" />
-            <argument type="service" id="annotation_reader" />
         </service>
     </services>
 </container>
