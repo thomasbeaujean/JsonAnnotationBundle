@@ -1,6 +1,6 @@
 <?php
 
-namespace thomasbeaujean\Bundle\JsonAnnotationBundle\DependencyInjection;
+namespace thomasbeaujean\JsonAnnotationBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;

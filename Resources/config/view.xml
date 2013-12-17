@@ -5,13 +5,13 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
-        <parameter key="jsonannotation.view.listener.class">thomasbeaujean\Bundle\JsonAnnotationBundle\EventListener\JsonListener</parameter>
+        <parameter key="jsonannotation.view.listener.class">thomasbeaujean\JsonAnnotationBundle\EventListener\JsonListener</parameter>
     </parameters>
 
     <services>
-        <service id="jsonannotation.view.listener" class="%thomasbeaujean.view.listener.class%">
+        <service id="jsonannotation.view.listener" class="%jsonannotation.view.listener.class%">
             <tag name="kernel.event_subscriber" />
-            <argument type="service" id="service_container" />
+            <argument type="service" id="annotation_reader" />
         </service>
     </services>
 </container>

@@ -1,6 +1,6 @@
 <?php
 
-namespace thomasbeaujean\Bundle\JsonAnnotationBundle\EventListener;
+namespace thomasbeaujean\JsonAnnotationBundle\EventListener;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
@@ -9,7 +9,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\StreamedResponse;
-use thomasbeaujean\Bundle\JsonAnnotationBundle\Configuration\Json;
+use thomasbeaujean\JsonAnnotationBundle\Configuration\Json;
 use Symfony\Component\HttpFoundation\Response;
 
 /*
@@ -38,7 +38,7 @@ class JsonListener implements EventSubscriberInterface
      *
      * @param ContainerInterface $container The service container instance
      */
-    public function __construct(ContainerInterface $container)
+    public function __construct($container)
     {
         $this->container = $container;
     }
