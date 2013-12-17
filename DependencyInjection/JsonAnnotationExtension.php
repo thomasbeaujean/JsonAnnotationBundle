@@ -15,6 +15,14 @@ use Symfony\Component\Config\FileLocator;
  */
 class JsonAnnotationExtension extends Extension
 {
+    /**
+     * Load the eventListener
+     *
+     * @param array            $configs   The config
+     * @param ContainerBuilder $container The container
+     *
+     * @return nothing
+     */
     public function load(array $configs, ContainerBuilder $container)
     {
         $configuration = $this->getConfiguration($configs, $container);
@@ -25,10 +33,11 @@ class JsonAnnotationExtension extends Extension
         $annotationsToLoad = array();
         $annotationsToLoad[] = 'view.xml';
 
-	    $this->addClassesToCompile(array(
-	  	    'thomasbeaujean\\JsonAnnotationBundle\\EventListener\\JsonListener',
-        ));
-
+	    $this->addClassesToCompile(
+	        array(
+	  	        'thomasbeaujean\\JsonAnnotationBundle\\EventListener\\JsonListener',
+            )
+	    );
 
         foreach ($annotationsToLoad as $config) {
             $loader->load($config);
