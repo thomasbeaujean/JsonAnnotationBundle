@@ -8,12 +8,9 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 /**
  * JsonAnnotationBundle.
  *
- * @author Thomas Beaujean
+ * @author Thomas Beaujean <thomas@appventus.com>
  */
 class JsonAnnotationBundle extends Bundle
 {
-    public function build(ContainerBuilder $container)
-    {
-        parent::build($container);
-    }
+
 }
