@@ -8,11 +8,16 @@ The JsonAnnotationBundle permits to use an annotation Json for your controller
 Use the annotation @Json() in your controller
 
 ## The reponse
+
 ### The normal response
 It is a json stream with the property 'success' with the true value and the property 'data' containing the array returned in the controller
 ### The exception response
 It is a json stream with the property 'success' with the false value and the property 'message' containing the error 
 # Examples
+## Import the bundle using composer
+    "thomasbeaujean/json-annotation-bundle": "dev-master"
+## Import the bundle in your AppKernel
+    new thomasbeaujean\JsonAnnotationBundle\JsonAnnotationBundle()
 ## The normal response Example
 
     use thomasbeaujean\JsonAnnotationBundle\Configuration\Json;
