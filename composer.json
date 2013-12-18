@@ -8,5 +8,5 @@
     "autoload": {
         "psr-0": { "thomasbeaujean\\JsonAnnotationBundle": "" }
     },
-    "target-dir": "thomasbeaujean/JsonAnnotationBundle",
+    "target-dir": "thomasbeaujean/JsonAnnotationBundle"
 }
