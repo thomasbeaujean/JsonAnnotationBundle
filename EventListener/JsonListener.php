@@ -90,7 +90,6 @@ class JsonListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            KernelEvents::CONTROLLER => array('onKernelController', -128),
             KernelEvents::VIEW => 'onKernelView',
             KernelEvents::EXCEPTION => 'onKernelException'
         );
