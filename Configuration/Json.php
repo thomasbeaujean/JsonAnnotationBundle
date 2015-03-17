@@ -1,6 +1,6 @@
 <?php
 
-namespace thomasbeaujean\JsonAnnotationBundle\Configuration;
+namespace tbn\JsonAnnotationBundle\Configuration;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ConfigurationAnnotation;
 

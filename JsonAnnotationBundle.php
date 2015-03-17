@@ -1,6 +1,6 @@
 <?php
 
-namespace thomasbeaujean\JsonAnnotationBundle;
+namespace tbn\JsonAnnotationBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -8,7 +8,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 /**
  * JsonAnnotationBundle.
  *
- * @author Thomas Beaujean <thomas@appventus.com>
+ * @author Thomas Beaujean
  */
 class JsonAnnotationBundle extends Bundle
 {
