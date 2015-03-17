@@ -1,12 +1,12 @@
 {
-    "name": "thomasbeaujean/json-annotation-bundle",
+    "name": "tbn/json-annotation-bundle",
     "description": "add the json annotation for an action",
     "version": "dev-master",
     "require-dev": {
         "symfony/class-loader": "2.3.*"
     },
     "autoload": {
-        "psr-0": { "thomasbeaujean\\JsonAnnotationBundle": "" }
+        "psr-0": { "tbn\\JsonAnnotationBundle": "" }
     },
-    "target-dir": "thomasbeaujean/JsonAnnotationBundle"
+    "target-dir": "tbn/JsonAnnotationBundle"
 }

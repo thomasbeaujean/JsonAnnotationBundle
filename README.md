@@ -15,12 +15,12 @@ It is a json stream with the property 'success' with the true value and the prop
 It is a json stream with the property 'success' with the false value and the property 'message' containing the error 
 # Examples
 ## Import the bundle using composer
-    "thomasbeaujean/json-annotation-bundle": "dev-master"
+    "tbn/json-annotation-bundle": "dev-master"
 ## Import the bundle in your AppKernel
-    new thomasbeaujean\JsonAnnotationBundle\JsonAnnotationBundle()
+    new tbn\JsonAnnotationBundle\JsonAnnotationBundle()
 ## The normal response Example
 
-    use thomasbeaujean\JsonAnnotationBundle\Configuration\Json;
+    use tbn\JsonAnnotationBundle\Configuration\Json;
  
     class DefaultController extends Controller
     {
@@ -46,7 +46,7 @@ It will send back a json stream
 
 ## The exception response
 
- use thomasbeaujean\JsonAnnotationBundle\Configuration\Json;
+ use tbn\JsonAnnotationBundle\Configuration\Json;
  
      class DefaultController extends Controller
      {

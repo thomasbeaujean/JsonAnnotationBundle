@@ -1,6 +1,6 @@
 <?php
 
-namespace thomasbeaujean\JsonAnnotationBundle\EventListener;
+namespace tbn\JsonAnnotationBundle\EventListener;
 
 use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
 use Symfony\Component\HttpKernel\KernelEvents;

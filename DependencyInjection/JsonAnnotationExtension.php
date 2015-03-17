@@ -1,6 +1,6 @@
 <?php
 
-namespace thomasbeaujean\JsonAnnotationBundle\DependencyInjection;
+namespace tbn\JsonAnnotationBundle\DependencyInjection;
 
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
@@ -35,7 +35,7 @@ class JsonAnnotationExtension extends Extension
 
 	    $this->addClassesToCompile(
 	        array(
-	  	        'thomasbeaujean\\JsonAnnotationBundle\\EventListener\\JsonListener',
+	  	        'tbn\\JsonAnnotationBundle\\EventListener\\JsonListener',
             )
 	    );
 
