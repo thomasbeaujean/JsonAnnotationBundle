@@ -1,5 +1,5 @@
 parameters:
-    tbn.json_annotation.view.listener.class: "tbn\JsonAnnotationBundle\EventListener\JsonListener"
+    tbn.json_annotation.view.listener.class: "tbn\\JsonAnnotationBundle\\EventListener\\JsonListener"
     
 services:
     tbn.json_annotation.view.listener:
@@ -11,7 +11,7 @@ services:
             - "%tbn.json_annotation.success_key%"
             - "%tbn.json_annotation.post_query_back%"
             - "%tbn.json_annotation.post_query_key%"
-        tags: [{ name:"kernel.event_subscriber"}]
+        tags: [{ name: "kernel.event_subscriber"}]
         
 
         
