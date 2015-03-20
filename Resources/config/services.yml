@@ -1,0 +1,17 @@
+parameters:
+    tbn.json_annotation.view.listener.class: "tbn\JsonAnnotationBundle\EventListener\JsonListener"
+    
+services:
+    tbn.json_annotation.view.listener:
+        class:  "%tbn.json_annotation.view.listener.class%"
+        arguments:
+            - "%tbn.json_annotation.exception_code%"
+            - "%tbn.json_annotation.data_key%"
+            - "%tbn.json_annotation.exception_message_key%"
+            - "%tbn.json_annotation.success_key%"
+            - "%tbn.json_annotation.post_query_back%"
+            - "%tbn.json_annotation.post_query_key%"
+        tags: [{ name:"kernel.event_subscriber"}]
+        
+
+        

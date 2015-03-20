@@ -23,6 +23,29 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('json_annotation', 'array');
 
+
+        $rootNode
+        ->children()
+            ->scalarNode('exception_code')
+                ->defaultValue(500)
+            ->end()
+            ->scalarNode('data_key')
+                ->defaultValue('data')
+            ->end()
+            ->scalarNode('exception_message_key')
+                ->defaultValue('message')
+            ->end()
+            ->scalarNode('success_key')
+                ->defaultValue('success')
+            ->end()
+            ->scalarNode('post_query_back')
+                ->defaultValue(false)
+            ->end()
+            ->scalarNode('post_query_key')
+                ->defaultValue('query')
+            ->end()
+        ->end();
+
         return $treeBuilder;
     }
 }

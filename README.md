@@ -7,6 +7,20 @@ The JsonAnnotationBundle permits to use an annotation Json for your controller
 
 Use the annotation @Json() in your controller
 
+#Configuration
+
+Some parameters are optionnals: 
+
+		json_annotation:
+				exception_code: 500 #the http code used for the exception 
+            	data_key: "data" # the key used to contains the data, it can be directly at the root, using the "" parameter
+            	exception_message_key: "message" #the key for the exeception message            
+            	success_key: "success" #the key for the success (that is true is the result is ok, false for an exception)
+            	post_query_back: false #do we send back the post parameters
+            	post_query_key: "query" #the key for the post back parameters
+            
+
+
 ## The reponse
 
 ### The normal response

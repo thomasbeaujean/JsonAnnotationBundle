@@ -7,6 +7,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * The TemplateListener class handles the @Template annotation.
@@ -15,6 +16,26 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class JsonListener implements EventSubscriberInterface
 {
+    /**
+     * Set the parameters for the response
+     *
+     * @param integer $exceptionCode
+     * @param string $dataKey
+     * @param string $exceptionMessageKey
+     * @param string $successKey
+     * @param string $postQueryBack
+     * @param string $postQueryKey
+     */
+    public function __construct($exceptionCode, $dataKey, $exceptionMessageKey, $successKey, $postQueryBack, $postQueryKey)
+    {
+        $this->exceptionCode = $exceptionCode;
+        $this->dataKey = $dataKey;
+        $this->exceptionMessageKey = $exceptionMessageKey;
+        $this->successKey = $successKey;
+        $this->postQueryBack = $postQueryBack;
+        $this->postQueryKey = $postQueryKey;
+    }
+
     /**
      * Renders the template and initializes a new response object with the
      * rendered template content.
@@ -41,8 +62,23 @@ class JsonListener implements EventSubscriberInterface
             }
         }
 
-        $jsonData['success'] = true;
-        $jsonData['data'] = $parameters;
+        $jsonData[$this->successKey] = true;
+
+        //the data is in an array
+        if ($this->dataKey !== '') {
+            $jsonData[$this->dataKey] = $parameters;
+        } else {
+            //the data is at the root
+            $jsonData = array_merge($jsonData, $parameters);
+        }
+
+        //send back the post parameters
+        if ($this->postQueryBack === true) {
+            $postParametersRequest = $request->request->all();
+            $jsonData[$this->postQueryKey] = $postParametersRequest;
+
+            unset($postParametersRequest);
+        }
 
         $json = json_encode($jsonData);
 
@@ -66,20 +102,45 @@ class JsonListener implements EventSubscriberInterface
             return;
         }
 
-        $jsonData =  array();
-        $jsonData['success'] = false;
+        //the request
+        $request = $event->getRequest();
 
+        $jsonData = array();
+        $jsonData[$this->successKey] = false;
+
+        //add exception
         $exception = $event->getException();
-        $jsonData['message'] = $exception->getMessage();
+        $jsonData[$this->exceptionMessageKey] = $exception->getMessage();
+
+        $jsonData = $this->addPostParameters($jsonData, $request);
 
         $json = json_encode($jsonData);
 
         $headers = array();
         $headers['Content-Type'] = 'application/json; charset=utf-8';
 
-        $response = new Response($json, 200, $headers);
-        $response->headers->set('X-Status-Code', 200);//BUG sf2 https://github.com/symfony/symfony/pull/5043
+        $response = new Response($json, $this->exceptionCode, $headers);
+        $response->headers->set('X-Status-Code', $this->exceptionCode);//BUG sf2 https://github.com/symfony/symfony/pull/5043
         $event->setResponse($response);
+    }
+
+    /**
+     * Add the post parameters if requested
+     *
+     * @param array $jsonData
+     * @param Request $request
+     */
+    protected function addPostParameters($jsonData, Request $request)
+    {
+        //send back the post parameters
+        if ($this->postQueryBack === true) {
+            $postParametersRequest = $request->request->all();
+            $jsonData[$this->postQueryKey] = $postParametersRequest;
+
+            unset($postParametersRequest);
+        }
+
+        return $jsonData;
     }
 
     /**
