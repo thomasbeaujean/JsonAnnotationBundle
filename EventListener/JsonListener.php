@@ -10,7 +10,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use tbn\JsonAnnotationBundle\Event\JsonEvents;
 use tbn\JsonAnnotationBundle\Event\JsonPreHookEvent;
-use Symfony\Component\EventDispatcher\EventDispatcher;
 
 /**
  * The JsonListener class handles the @Json annotation.
@@ -29,7 +28,7 @@ class JsonListener implements EventSubscriberInterface
      * @param string $postQueryBack
      * @param string $postQueryKey
      */
-    public function __construct($exceptionCode, $dataKey, $exceptionMessageKey, $successKey, $postQueryBack, $postQueryKey)
+    public function __construct($exceptionCode, $dataKey, $exceptionMessageKey, $successKey, $postQueryBack, $postQueryKey, $dispatcher)
     {
         $this->exceptionCode = $exceptionCode;
         $this->dataKey = $dataKey;
@@ -37,6 +36,7 @@ class JsonListener implements EventSubscriberInterface
         $this->successKey = $successKey;
         $this->postQueryBack = $postQueryBack;
         $this->postQueryKey = $postQueryKey;
+        $this->dispatcher = $dispatcher;
     }
 
     /**
@@ -59,7 +59,7 @@ class JsonListener implements EventSubscriberInterface
         }
 
         // send the prehook event
-        $dispatcher = new EventDispatcher();
+        $dispatcher = $this->dispatcher;
         $prehookEvent = new JsonPreHookEvent($event, $parameters);
         $dispatcher->dispatch(JsonEvents::JSON_PREHOOK, $prehookEvent);
         unset($prehookEvent);
