@@ -83,3 +83,16 @@ It will send back a json stream
      'success' => false
      'message'    => 'some error occured'
 
+
+# Events
+
+A pre-hook event is dispatched at the beginning of the json response. It can be used to validate a token for example.
+
+    some_bundle.listener.json_token_validation_listener:
+        class: "some_bundle\\Listener\\JsonTokenValidationListener"
+        tags:
+            - { name: kernel.event_listener, event: json.pre_hook, method: onJsonPrehook }
+
+The method has one argument of type JsonPreHookEvent.
+
+	public function onJsonPrehook(JsonPreHookEvent $jsonPreHookEvent) 
