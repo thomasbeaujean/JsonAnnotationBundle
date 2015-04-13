@@ -12,6 +12,7 @@ services:
             - "%tbn.json_annotation.post_query_back%"
             - "%tbn.json_annotation.post_query_key%"
             - "@event_dispatcher"
+            - "%kernel.debug%"
         tags: [{ name: "kernel.event_subscriber"}]
         
 

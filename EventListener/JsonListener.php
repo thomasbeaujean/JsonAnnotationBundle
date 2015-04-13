@@ -27,8 +27,9 @@ class JsonListener implements EventSubscriberInterface
      * @param string $successKey
      * @param string $postQueryBack
      * @param string $postQueryKey
+     * @param string $kernelDebug
      */
-    public function __construct($exceptionCode, $dataKey, $exceptionMessageKey, $successKey, $postQueryBack, $postQueryKey, $dispatcher)
+    public function __construct($exceptionCode, $dataKey, $exceptionMessageKey, $successKey, $postQueryBack, $postQueryKey, $dispatcher, $kernelDebug)
     {
         $this->exceptionCode = $exceptionCode;
         $this->dataKey = $dataKey;
@@ -37,6 +38,7 @@ class JsonListener implements EventSubscriberInterface
         $this->postQueryBack = $postQueryBack;
         $this->postQueryKey = $postQueryKey;
         $this->dispatcher = $dispatcher;
+        $this->kernelDebug = $kernelDebug;
     }
 
     /**
@@ -126,6 +128,11 @@ class JsonListener implements EventSubscriberInterface
         //add exception
         $exception = $event->getException();
         $jsonData[$this->exceptionMessageKey] = $exception->getMessage();
+
+        //do we debug the kernel
+        if ($this->kernelDebug) {
+            $jsonData['error_trace'] = $exception->getTrace();
+        }
 
         $jsonData = $this->addPostParameters($jsonData, $request);
 
