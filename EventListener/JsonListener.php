@@ -8,9 +8,11 @@ use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use tbn\JsonAnnotationBundle\Event\JsonEvents;
+use tbn\JsonAnnotationBundle\Event\JsonPreHookEvent;
 
 /**
- * The TemplateListener class handles the @Template annotation.
+ * The JsonListener class handles the @Json annotation.
  *
  * @author Thomas Beaujean
  */
@@ -25,8 +27,9 @@ class JsonListener implements EventSubscriberInterface
      * @param string $successKey
      * @param string $postQueryBack
      * @param string $postQueryKey
+     * @param string $kernelDebug
      */
-    public function __construct($exceptionCode, $dataKey, $exceptionMessageKey, $successKey, $postQueryBack, $postQueryKey)
+    public function __construct($exceptionCode, $dataKey, $exceptionMessageKey, $successKey, $postQueryBack, $postQueryKey, $dispatcher, $kernelDebug)
     {
         $this->exceptionCode = $exceptionCode;
         $this->dataKey = $dataKey;
@@ -34,6 +37,8 @@ class JsonListener implements EventSubscriberInterface
         $this->successKey = $successKey;
         $this->postQueryBack = $postQueryBack;
         $this->postQueryKey = $postQueryKey;
+        $this->dispatcher = $dispatcher;
+        $this->kernelDebug = $kernelDebug;
     }
 
     /**
@@ -47,20 +52,19 @@ class JsonListener implements EventSubscriberInterface
     public function onKernelView(GetResponseForControllerResultEvent $event)
     {
         $request = $event->getRequest();
+
         $parameters = $event->getControllerResult();
 
-        if (null === $parameters) {
-            if (!$vars = $request->attributes->get('_template_vars')) {
-                if (!$vars = $request->attributes->get('_template_default_vars')) {
-                    return;
-                }
-            }
-
-            $parameters = array();
-            foreach ($vars as $var) {
-                $parameters[$var] = $request->attributes->get($var);
-            }
+        //the controller set automatically an attribut _json if the request is a json
+        if (!$template = $event->getRequest()->attributes->get('_json')) {
+            return;
         }
+
+        // send the prehook event
+        $dispatcher = $this->dispatcher;
+        $prehookEvent = new JsonPreHookEvent($event, $parameters);
+        $dispatcher->dispatch(JsonEvents::JSON_PREHOOK, $prehookEvent);
+        unset($prehookEvent);
 
         $jsonData[$this->successKey] = true;
 
@@ -80,12 +84,25 @@ class JsonListener implements EventSubscriberInterface
             unset($postParametersRequest);
         }
 
+        //encode json
         $json = json_encode($jsonData);
 
+        $headers = $this->getJsonHeaders();
+
+        $event->setResponse(new Response($json, 200, $headers));
+    }
+
+    /**
+     * Get the headers of a json response
+     *
+     * @return multitype:string
+     */
+    protected function getJsonHeaders()
+    {
         $headers = array();
         $headers['Content-Type'] = 'application/json; charset=utf-8';
 
-        $event->setResponse(new Response($json, 200, $headers));
+        return $headers;
     }
 
     /**
@@ -112,12 +129,16 @@ class JsonListener implements EventSubscriberInterface
         $exception = $event->getException();
         $jsonData[$this->exceptionMessageKey] = $exception->getMessage();
 
+        //do we debug the kernel
+        if ($this->kernelDebug) {
+            $jsonData['error_trace'] = $exception->getTrace();
+        }
+
         $jsonData = $this->addPostParameters($jsonData, $request);
 
         $json = json_encode($jsonData);
 
-        $headers = array();
-        $headers['Content-Type'] = 'application/json; charset=utf-8';
+        $headers = $this->getJsonHeaders();
 
         $response = new Response($json, $this->exceptionCode, $headers);
         $response->headers->set('X-Status-Code', $this->exceptionCode);//BUG sf2 https://github.com/symfony/symfony/pull/5043
