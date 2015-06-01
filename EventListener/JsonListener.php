@@ -2,14 +2,19 @@
 
 namespace tbn\JsonAnnotationBundle\EventListener;
 
-use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
-use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\Response;
+
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+
+use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
+use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
+use Symfony\Component\HttpKernel\KernelEvents;
+
 use tbn\JsonAnnotationBundle\Event\JsonEvents;
 use tbn\JsonAnnotationBundle\Event\JsonPreHookEvent;
+
 
 /**
  * The JsonListener class handles the @Json annotation.
@@ -40,6 +45,27 @@ class JsonListener implements EventSubscriberInterface
         $this->dispatcher = $dispatcher;
         $this->kernelDebug = $kernelDebug;
     }
+
+    /**
+     *
+     * @param GetResponseForControllerResultEvent $event A GetResponseForControllerResultEvent instance
+     *
+     * @return Response The json response
+     */
+    public function onKernelRequest(GetResponseEvent $event)
+    {
+        $request = $event->getRequest();
+
+        //the OPTIONS verb is required by the browser
+        if ($request->getMethod() === 'OPTIONS') {
+            //there is no need to run the controller action
+            //   encode json
+            $json = json_encode(array());
+            $headers = $this->getJsonHeaders();
+            $event->setResponse(new Response($json, 200, $headers));
+        }
+    }
+
 
     /**
      * Renders the template and initializes a new response object with the
@@ -172,6 +198,7 @@ class JsonListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
+            KernelEvents::REQUEST => 'onKernelRequest',
             KernelEvents::VIEW => 'onKernelView',
             KernelEvents::EXCEPTION => 'onKernelException'
         );
