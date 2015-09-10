@@ -1,6 +1,7 @@
 parameters:
     tbn.json_annotation.view.listener.class: "tbn\\JsonAnnotationBundle\\EventListener\\JsonListener"
-    
+    tbn.json_annotation.json_decoder_listener.class: "tbn\\JsonAnnotationBundle\\EventListener\\JsonDecoderListener"
+
 services:
     tbn.json_annotation.view.listener:
         class:  "%tbn.json_annotation.view.listener.class%"
@@ -14,6 +15,7 @@ services:
             - "@event_dispatcher"
             - "%kernel.debug%"
         tags: [{ name: "kernel.event_subscriber"}]
-        
 
-        
+    tbn.json_annotation.json_decoder_listener:
+        class:  "%tbn.json_annotation.json_decoder_listener.class%"
+        tags: [{ name: "kernel.event_subscriber"}]

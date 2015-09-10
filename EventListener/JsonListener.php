@@ -3,18 +3,14 @@
 namespace tbn\JsonAnnotationBundle\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
-
 use tbn\JsonAnnotationBundle\Event\JsonEvents;
 use tbn\JsonAnnotationBundle\Event\JsonPreHookEvent;
-
 
 /**
  * The JsonListener class handles the @Json annotation.
@@ -27,12 +23,13 @@ class JsonListener implements EventSubscriberInterface
      * Set the parameters for the response
      *
      * @param integer $exceptionCode
-     * @param string $dataKey
-     * @param string $exceptionMessageKey
-     * @param string $successKey
-     * @param string $postQueryBack
-     * @param string $postQueryKey
-     * @param string $kernelDebug
+     * @param string  $dataKey
+     * @param string  $exceptionMessageKey
+     * @param string  $successKey
+     * @param string  $postQueryBack
+     * @param string  $postQueryKey
+     * @param string  $dispatcher
+     * @param string  $kernelDebug
      */
     public function __construct($exceptionCode, $dataKey, $exceptionMessageKey, $successKey, $postQueryBack, $postQueryKey, $dispatcher, $kernelDebug)
     {
@@ -65,7 +62,6 @@ class JsonListener implements EventSubscriberInterface
             $event->setResponse(new Response($json, 200, $headers));
         }
     }
-
 
     /**
      * Renders the template and initializes a new response object with the
@@ -119,19 +115,6 @@ class JsonListener implements EventSubscriberInterface
     }
 
     /**
-     * Get the headers of a json response
-     *
-     * @return multitype:string
-     */
-    protected function getJsonHeaders()
-    {
-        $headers = array();
-        $headers['Content-Type'] = 'application/json; charset=utf-8';
-
-        return $headers;
-    }
-
-    /**
      * On kernel exception, send a json response with a success to false
      *
      * @param GetResponseForExceptionEvent $event The event
@@ -172,6 +155,33 @@ class JsonListener implements EventSubscriberInterface
     }
 
     /**
+     * List the subscribed events
+     *
+     * @return multitype:string multitype:string number
+     */
+    public static function getSubscribedEvents()
+    {
+        return array(
+            KernelEvents::REQUEST => 'onKernelRequest',
+            KernelEvents::VIEW => 'onKernelView',
+            KernelEvents::EXCEPTION => 'onKernelException',
+        );
+    }
+
+    /**
+     * Get the headers of a json response
+     *
+     * @return multitype:string
+     */
+    protected function getJsonHeaders()
+    {
+        $headers = array();
+        $headers['Content-Type'] = 'application/json; charset=utf-8';
+
+        return $headers;
+    }
+
+    /**
      * Add the post parameters if requested
      *
      * @param array $jsonData
@@ -188,19 +198,5 @@ class JsonListener implements EventSubscriberInterface
         }
 
         return $jsonData;
-    }
-
-    /**
-     * List the subscribed events
-     *
-     * @return multitype:string multitype:string number
-     */
-    public static function getSubscribedEvents()
-    {
-        return array(
-            KernelEvents::REQUEST => 'onKernelRequest',
-            KernelEvents::VIEW => 'onKernelView',
-            KernelEvents::EXCEPTION => 'onKernelException'
-        );
     }
 }
