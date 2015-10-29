@@ -17,9 +17,9 @@ class JsonPreHookEvent extends Event
     /**
      *
      * @param GetResponseForControllerResultEvent $event
-     * @param array $parameters
+     * @param unknown                             $parameters
      */
-    public function __construct(GetResponseForControllerResultEvent $event, array $parameters)
+    public function __construct(GetResponseForControllerResultEvent $event, $parameters)
     {
         $this->event = $event;
         $this->parameters = $parameters;
