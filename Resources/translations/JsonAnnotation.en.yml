@@ -1,1 +1,1 @@
-authentication.exception: 'You can not access this resource, you might have been logged out'
+authentication.exception: 'You can not access this resource, you might have been disconnected'
