@@ -23,7 +23,6 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('json_annotation', 'array');
 
-
         $rootNode
         ->children()
             ->scalarNode('exception_code')
@@ -43,6 +42,9 @@ class Configuration implements ConfigurationInterface
             ->end()
             ->scalarNode('post_query_key')
                 ->defaultValue('query')
+            ->end()
+            ->booleanNode('enable_authentication_error')
+                ->defaultFalse()
             ->end()
         ->end();
 

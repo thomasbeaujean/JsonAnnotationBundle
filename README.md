@@ -9,16 +9,17 @@ Use the annotation @Json() in your controller
 
 #Configuration
 
-Some parameters are optionnals: 
+Some parameters are optionnals:
 
 		json_annotation:
-				exception_code: 500 #the http code used for the exception 
+				exception_code: 500 #the http code used for the exception
             	data_key: "data" # the key used to contains the data, it can be directly at the root, using the "" parameter
-            	exception_message_key: "message" #the key for the exeception message            
+            	exception_message_key: "message" #the key for the exeception message
             	success_key: "success" #the key for the success (that is true is the result is ok, false for an exception)
             	post_query_back: false #do we send back the post parameters
             	post_query_key: "query" #the key for the post back parameters
-            
+                enable_authentication_error: false #A json response is sent back is the user is not authenticated or not granted
+
 
 
 ## The reponse
@@ -26,7 +27,7 @@ Some parameters are optionnals:
 ### The normal response
 It is a json stream with the property 'success' with the true value and the property 'data' containing the array returned in the controller
 ### The exception response
-It is a json stream with the property 'success' with the false value and the property 'message' containing the error 
+It is a json stream with the property 'success' with the false value and the property 'message' containing the error
 # Examples
 ## Import the bundle using composer
     "tbn/json-annotation-bundle": "dev-master"
@@ -35,10 +36,10 @@ It is a json stream with the property 'success' with the false value and the pro
 ## The normal response Example
 
     use tbn\JsonAnnotationBundle\Configuration\Json;
- 
+
     class DefaultController extends Controller
     {
- 
+
          /**
           * The main view
           *
@@ -48,7 +49,7 @@ It is a json stream with the property 'success' with the false value and the pro
           * @return array
           */
          public function somerouteAction()
-         { 
+         {
   	         return array('data1' => 'value1', 'data2' => 'value2');
          }
       }
@@ -61,7 +62,7 @@ It will send back a json stream
 ## The exception response
 
  use tbn\JsonAnnotationBundle\Configuration\Json;
- 
+
      class DefaultController extends Controller
      {
          /**
@@ -73,7 +74,7 @@ It will send back a json stream
           * @return array
           */
          public function somerouteAction()
-         { 
+         {
     	     throw \Exception('some error occured');
          }
      }
@@ -95,4 +96,4 @@ A pre-hook event is dispatched at the beginning of the json response. It can be 
 
 The method has one argument of type JsonPreHookEvent.
 
-	public function onJsonPrehook(JsonPreHookEvent $jsonPreHookEvent) 
+	public function onJsonPrehook(JsonPreHookEvent $jsonPreHookEvent)
