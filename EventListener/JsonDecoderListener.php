@@ -25,7 +25,7 @@ class JsonDecoderListener implements EventSubscriberInterface
 
         if ('json' === $request->getContentType()) {
             $content = $request->getContent();
-            if ($content !== null) {
+            if (!empty($content)) {
                 $json = json_decode($content, true);
                 $request->request->add($json);
             }
