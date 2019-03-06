@@ -38,7 +38,7 @@ class JsonAnnotationExtension extends Extension
         $loader->load('services.yml');
 
         //for performance, compile the listener class
-        $this->addClassesToCompile(
+        $this->addAnnotatedClassesToCompile(
             array("%tbn.json_annotation.view.listener.class%")
         );
 
